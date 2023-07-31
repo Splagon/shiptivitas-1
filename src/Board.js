@@ -3,6 +3,7 @@ import Dragula from 'dragula';
 import 'dragula/dist/dragula.css';
 import Swimlane from './Swimlane';
 import './Board.css';
+import dragula from 'dragula';
 
 export default class Board extends React.Component {
   constructor(props) {
@@ -55,6 +56,23 @@ export default class Board extends React.Component {
       <Swimlane name={name} clients={clients} dragulaRef={ref}/>
     );
   }
+
+  componentDidMount = () => {
+    dragula([
+      this.swimlanes.backlog.current,
+      this.swimlanes.inProgress.current,
+      this.swimlanes.complete.current]).on('drop', function(el, target) {
+        el.classList.value = 'Card ';
+        console.log()
+        if (target.id === 'Backlog') {
+          el.classList.add('Card-grey');
+        } else if (target.id === 'In Progress') {
+          el.classList.add('Card-blue');
+        } else if (target.id === 'Complete') {
+          el.classList.add('Card-green');
+        }
+      });
+  };
 
   render() {
     return (
